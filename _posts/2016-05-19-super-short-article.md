@@ -6,3 +6,7 @@ categories: misc
 
 
 # fff
+
+```js
+console.log(1)
+```
