@@ -25,7 +25,7 @@ Chain KUBE-SERVICES (2 references)
 target     prot opt source               destination
     0     0 KUBE-SVC-5QWMUZGI6RE4EX4J  tcp  --  *      *       0.0.0.0/0            10.107.12.34         /* default/gitlab:gitlab-ui cluster IP */ tcp dpt:80
     0     0 KUBE-SVC-7GIV3D4MIXKARDDM  tcp  --  *      *       0.0.0.0/0            10.107.12.34         /* default/gitlab:gitlab-ssh cluster IP */ tcp dpt:22
-``
+```
 
 # iptables svc
 ```
