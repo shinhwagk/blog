@@ -1,3 +1,9 @@
+---
+layout: post
+title: "service -> pod by iptables"
+categories: misc
+---
+
 # display k8s svc
 ```
 [root@cp1 opt]# kubectl get svc
