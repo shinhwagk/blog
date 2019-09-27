@@ -27,7 +27,7 @@ target     prot opt source               destination
     0     0 KUBE-SVC-7GIV3D4MIXKARDDM  tcp  --  *      *       0.0.0.0/0            10.107.12.34         /* default/gitlab:gitlab-ssh cluster IP */ tcp dpt:22
 ```
 
-# iptables svc
+# iptables svc chain
 ```
 [root@cp1 opt]# iptables -L KUBE-SVC-5QWMUZGI6RE4EX4J  -t nat -n
 Chain KUBE-SVC-5QWMUZGI6RE4EX4J (2 references)
