@@ -18,10 +18,10 @@ events { worker_connections  1024; }
 http {
   server {
     listen       443 ssl;
-    server_name  gcr.io;
+    server_name  quay.io;
 
-    ssl_certificate       /cert/gcr.io/domain.crt;
-    ssl_certificate_key   /cert/gcr.io/domain.key;
+    ssl_certificate       /cert/quay.io/domain.crt;
+    ssl_certificate_key   /cert/quay.io/domain.key;
 
     location / {
 	  proxy_pass http://127.0.0.1:9001;
