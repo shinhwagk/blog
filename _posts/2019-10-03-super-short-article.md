@@ -24,7 +24,7 @@ http {
     ssl_certificate_key   /cert/quay.io/domain.key;
 
     location / {
-	    proxy_pass http://127.0.0.1:9001;
+	proxy_pass http://127.0.0.1:9001;
     }
   }
   server {
