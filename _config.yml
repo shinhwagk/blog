@@ -4,6 +4,3 @@ email: shanghai_sl@hotmail.com
 description: 7788 5566
 
 theme: minima
-plugins:
- - jekyll-feed
- - jekyll-seo-tag
