@@ -54,6 +54,5 @@ docker volume create nginx
 docker rm -f nginx
 docker rm -f nexus
 docker run -d -p 8081:8081 -p 9002:9002 --name nexus -v nexus-data:/nexus-data sonatype/nexus3
-docker run -d -p 80:80 -p 443:443 -v `pwd`/nginx.conf:/etc/nginx/nginx.conf:ro -v nginx:/cert --name nginx nginx 
+docker run -d -p 80:80 -p 443:443 --link nexus:nexus -v `pwd`/nginx.conf:/etc/nginx/nginx.conf:ro -v nginx:/cert --name nginx nginx 
 ```
-
