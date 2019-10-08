@@ -5,10 +5,16 @@ categories: misc
 ---
 
 ```sh
-mkdir -p /cert/quay.io /cert/k8s.gcr.io
+openssl genrsa -out ca.key 2048
+openssl req -x509 -new -nodes -key ca.key -days 9999 -out ca.pem -subj '/CN=shinhwagk'
 
-openssl req -newkey rsa:4096 -nodes -sha256 -keyout /cert/quay.io/domain.key -x509 -days 3650 -out /cert/quay.io/domain.crt -subj "/CN=quay.io"
-openssl req -newkey rsa:4096 -nodes -sha256 -keyout /cert/k8s.gcr.io/domain.key -x509 -days 3650 -out /cert/k8s.gcr.io/domain.crt -subj '/CN=k8s.gcr.io'
+openssl genrsa -out nexus-quay.key 2048
+openssl req -new -key nexus-quay.key -out nexus-quay.csr -subj '/CN=quay.io'
+openssl x509 -req -days 9999 -CA ca.pem -CAkey ca.key -CAcreateserial -in nexus-quay.csr -out nexus-quay.pem 
+
+openssl genrsa -out nexus-gcr.key 2048
+openssl req -new -key nexus-gcr.key -out nexus-gcr.csr -subj '/CN=gcr.io'
+openssl x509 -req -days 9999 -CA ca.pem -CAkey ca.key -CAcreateserial -in nexus-gcr.csr -out nexus-gcr.pem 
 ```
 
 ```nginx
@@ -20,8 +26,8 @@ http {
     listen       443 ssl;
     server_name  quay.io;
 
-    ssl_certificate       /cert/quay.io/domain.crt;
-    ssl_certificate_key   /cert/quay.io/domain.key;
+    ssl_certificate       /cert/nexus-quay.pem;
+    ssl_certificate_key   /cert/nexus-quay.key;
 
     location / {
 	proxy_pass http://127.0.0.1:9001;
@@ -29,10 +35,10 @@ http {
   }
   server {
     listen       443 ssl;
-    server_name  k8s.gcr.io;
+    server_name  gcr.io;
 
-    ssl_certificate       /cert/k8s.gcr.io/domain.crt;
-    ssl_certificate_key   /cert/k8s.gcr.io/domain.key;
+    ssl_certificate       /cert/nexus-gcr.pem;
+    ssl_certificate_key   /cert/nexus-gcr.key;
 
     location / {
       proxy_pass http://127.0.0.1:9002;
@@ -41,7 +47,9 @@ http {
 }
 ```
 ```sh
-docker run -d --net host -v `pwd`/nginx.conf:/etc/nginx/nginx.conf:ro -v `pwd`:/cert --name nginx nginx 
-docker run -d --net host --name nexus sonatype/nexus3
+docker run -d -p 80:80 -p 443:443 -v `pwd`/nginx.conf:/etc/nginx/nginx.conf:ro -v `pwd`:/cert --name nginx nginx 
+docker volume create nexus-data1
+docker volume create nexus-data2
+docker run -d -p 9001:8081 --name nexus-quay -v nexus-data1:/nexus-data sonatype/nexus3
+docker run -d -p 9002:8081 --name nexus-gcr  -v nexus-data2:/nexus-data sonatype/nexus3
 ```
-
