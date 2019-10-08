@@ -30,7 +30,7 @@ http {
     ssl_certificate_key   /cert/nexus-quay.key;
 
     location / {
-	proxy_pass http://127.0.0.1:9001;
+	  proxy_pass http://nexus:9001;
     }
   }
   server {
@@ -41,15 +41,19 @@ http {
     ssl_certificate_key   /cert/nexus-gcr.key;
 
     location / {
-      proxy_pass http://127.0.0.1:9002;
+      proxy_pass http://nexus:9002;
     }
   }
 }
 ```
+
 ```sh
-docker run -d -p 80:80 -p 443:443 -v `pwd`/nginx.conf:/etc/nginx/nginx.conf:ro -v `pwd`:/cert --name nginx nginx 
-docker volume create nexus-data1
-docker volume create nexus-data2
-docker run -d -p 9001:8081 --name nexus-quay -v nexus-data1:/nexus-data sonatype/nexus3
-docker run -d -p 9002:8081 --name nexus-gcr  -v nexus-data2:/nexus-data sonatype/nexus3
+docker volume create nexus-data
+docker volume create nginx
+
+docker rm -f nginx
+docker rm -f nexus
+docker run -d -p 8081:8081 -p 9002:9002 --name nexus -v nexus-data:/nexus-data sonatype/nexus3
+docker run -d -p 80:80 -p 443:443 -v `pwd`/nginx.conf:/etc/nginx/nginx.conf:ro -v nginx:/cert --name nginx nginx 
 ```
+
