@@ -52,7 +52,7 @@ http {
     server {
         listen 443 ssl;
         server_name gk.io;
-        client_max_body_size 1G;
+        client_max_body_size 1G; # 用于私有仓库所以增大client发送过来的body大小
         ssl_certificate /cert/nexus-gk.pem;
         ssl_certificate_key /cert/nexus-gk.key;
         location / {
