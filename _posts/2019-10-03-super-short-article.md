@@ -19,6 +19,10 @@ openssl x509 -req -days 9999 -CA ca.pem -CAkey ca.key -CAcreateserial -in nexus-
 openssl genrsa -out nexus-gk.key 2048
 openssl req -new -key nexus-gk.key -out nexus-gcr.csr -subj '/CN=gk.io'
 openssl x509 -req -days 9999 -CA ca.pem -CAkey ca.key -CAcreateserial -in nexus-gcr.csr -out nexus-gk.pem 
+
+openssl genrsa -out nexus-elastic.key 2048
+openssl req -new -key nexus-elastic.key -out nexus-gcr.csr -subj '/CN=elastic.co'
+openssl x509 -req -days 9999 -CA ca.pem -CAkey ca.key -CAcreateserial -in nexus-gcr.csr -out nexus-elastic.pem 
 ```
 
 ```nginx
@@ -57,6 +61,15 @@ http {
         ssl_certificate_key /cert/nexus-gk.key;
         location / {
             proxy_pass http://nexus:9003;
+        }
+    }
+    server {
+        listen 443 ssl;
+        server_name elastic.co;
+        ssl_certificate /cert/nexus-elastic.pem;
+        ssl_certificate_key /cert/nexus-elastic.key;
+        location / {
+            proxy_pass http://nexus:9004;
         }
     }
 }
