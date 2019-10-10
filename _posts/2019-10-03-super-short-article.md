@@ -21,7 +21,7 @@ openssl req -new -key nexus-gk.key -out nexus-gcr.csr -subj '/CN=gk.io'
 openssl x509 -req -days 9999 -CA ca.pem -CAkey ca.key -CAcreateserial -in nexus-gcr.csr -out nexus-gk.pem 
 
 openssl genrsa -out nexus-elastic.key 2048
-openssl req -new -key nexus-elastic.key -out nexus-gcr.csr -subj '/CN=elastic.co'
+openssl req -new -key nexus-elastic.key -out nexus-gcr.csr -subj '/CN=docker.elastic.co'
 openssl x509 -req -days 9999 -CA ca.pem -CAkey ca.key -CAcreateserial -in nexus-gcr.csr -out nexus-elastic.pem 
 ```
 
@@ -65,7 +65,7 @@ http {
     }
     server {
         listen 443 ssl;
-        server_name elastic.co;
+        server_name docker.elastic.co;
         ssl_certificate /cert/nexus-elastic.pem;
         ssl_certificate_key /cert/nexus-elastic.key;
         location / {
@@ -73,7 +73,6 @@ http {
         }
     }
 }
-
 ```
 
 ```sh
@@ -82,6 +81,6 @@ docker volume create nginx
 
 docker rm -f nginx
 docker rm -f nexus
-docker run -d -p 8081:8081 -p 9002:9002 --name nexus -v nexus-data:/nexus-data sonatype/nexus3
+docker run -d -p 8081:8081 -p 9004:9004 -p 9003:9003 -p 9002:9002 -p 9001:9001 --name nexus -v nexus-data:/nexus-data sonatype/nexus3
 docker run -d -p 443:443 --link nexus:nexus -v `pwd`/nginx.conf:/etc/nginx/nginx.conf:ro -v nginx:/cert --name nginx nginx 
 ```
