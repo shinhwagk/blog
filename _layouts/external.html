@@ -3,7 +3,9 @@
   <head>
     <title>{{ page.title }}</title>
 
-    <meta http-equiv="refresh" content="0;url={{ page.external_url }}">
+<!--     <meta http-equiv="refresh" content="0;url={{ page.external_url }}"> -->
   </head>
-  <body><!-- Google Analytics JavaScript --></body>
+  <body>
+    <iframe src="{{ page.external_url }}"></iframe>
+  </body>
 </html>
