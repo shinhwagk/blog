@@ -5,3 +5,6 @@ description: 7788 5566
 url: shinhwagk.com
 
 theme: minima
+
+minima:
+  skin: dark
