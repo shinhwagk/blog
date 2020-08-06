@@ -24,7 +24,7 @@ layout: default
         {%- for post in posts -%}
         <li>
             <h3>
-                <span class="post-meta">[{{ post.misc }}]</span>
+                <span class="post-meta">[{{ post.categories }}]</span>
                 <a class="post-link" href="{{ post.url | relative_url }}">
                     {{ post.title | escape }}
                 </a>
