@@ -1,7 +1,9 @@
-title: GK Notes
+title: gk Blog
 author: shinhwagk
 email: shanghai_sl@hotmail.com
 description: 7788 5566
 url: shinhwagk.com
 
-theme: minima
+plugins:
+ - jekyll-feed
+ - jekyll-seo-tag
